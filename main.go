@@ -30,7 +30,7 @@ func main() {
 
 		if !regexPattern {
 			fmt.Println("Names must be only letters!")
-			break //break example, throws the iteration out of the loop
+			continue //continue example, skips the rest of the code and start a new iteration
 		}
 
 		fmt.Println("Enter your last name: ")
