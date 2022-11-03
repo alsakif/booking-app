@@ -19,8 +19,8 @@ func main() {
 		var firstName string
 		var lastName string
 		var email string
-		var maxTickets uint = 45
 
+		//Function with pre defined input parameter
 		greetUsers(conferenceName, conferenceTickets, remainingTickets)
 
 		fmt.Println("Enter your first name: ")
@@ -30,7 +30,7 @@ func main() {
 
 		if !regexPattern {
 			fmt.Println("Names must be only letters!")
-			continue //continue example, skips the rest of the code and start a new iteration
+			continue
 		}
 
 		fmt.Println("Enter your last name: ")
@@ -56,36 +56,16 @@ func main() {
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
 
-		for bookedTickets == 0 {
-			fmt.Println("Invalid Input!")
-
-			fmt.Println("Enter number of tickets: ")
-			fmt.Scan(&bookedTickets)
-		}
-		for bookedTickets > remainingTickets {
-			fmt.Println(remainingTickets, "tickets are available. You have asked too much!")
-
-			fmt.Println("Enter number of tickets: ")
-			fmt.Scan(&bookedTickets)
-		}
-
-		for bookedTickets > maxTickets {
-			fmt.Println("You can not buy more than ", maxTickets, "tickets")
-
-			fmt.Println("Enter number of tickets: ")
-			fmt.Scan(&bookedTickets)
-		}
+		bookingTicketValidation(bookedTickets, remainingTickets)
 
 		remainingTickets = remainingTickets - bookedTickets
 		bookings = append(bookings, firstName+" "+lastName)
 
-		FirstNames, LastNames := getNames(bookings)
-		fmt.Println("Confirmed tickets: ", FirstNames)
-		fmt.Println("List of last names: ", LastNames)
-
 		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
-		fmt.Println(remainingTickets, "tickets are left for", conferenceName)
+		fmt.Println(remainingTickets, "tickets are left !")
 
+		firstNames := getConfimedBookingList(bookings)
+		fmt.Println("Confirmed Booking List", firstNames)
 	}
 	fmt.Println("All Tickets are booked. Thank you for your concern. Please comeback in next season.")
 	duration := time.Since(start)
@@ -99,13 +79,34 @@ func greetUsers(confName string, confTicket int, remainingTickets uint) {
 	fmt.Println("Get your tickets here to attend the conference!")
 }
 
-func getNames(bookings []string) ([]string, []string) {
-	firstNames := []string{}
-	lastNames := []string{}
-	for _, booking := range bookings {
-		var name = strings.Fields(booking)
-		firstNames = append(firstNames, name[0])
-		lastNames = append(lastNames, name[1])
+func bookingTicketValidation(bookedTickets uint, remainingTickets uint) {
+	var maxTickets uint = 45
+	for bookedTickets == 0 {
+		fmt.Println("Invalid Input!")
+
+		fmt.Println("Enter number of tickets: ")
+		fmt.Scan(&bookedTickets)
 	}
-	return firstNames, lastNames
+	for bookedTickets > remainingTickets {
+		fmt.Println(remainingTickets, "tickets are available. You have asked too much!")
+
+		fmt.Println("Enter number of tickets: ")
+		fmt.Scan(&bookedTickets)
+	}
+
+	for bookedTickets > maxTickets {
+		fmt.Println("You can not buy more than ", maxTickets, "tickets")
+
+		fmt.Println("Enter number of tickets: ")
+		fmt.Scan(&bookedTickets)
+	}
+}
+
+func getConfimedBookingList(bookings []string) []string {
+	firstNames := []string{}
+	for _, booking := range bookings {
+		var name = strings.Fields(booking) //Splits the string with white space as separator and addresses every splits with index number
+		firstNames = append(firstNames, name[0])
+	}
+	return firstNames
 }
