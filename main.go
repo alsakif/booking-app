@@ -14,7 +14,6 @@ func main() {
 	var bookedTickets uint
 	var bookings []string
 
-	fmt.Println("Welcome to", conferenceName, "booking application")
 	start := time.Now()
 	for remainingTickets > 0 {
 		var firstName string
@@ -22,8 +21,7 @@ func main() {
 		var email string
 		var maxTickets uint = 45
 
-		fmt.Println("We have total of", conferenceTickets, "tickets and", remainingTickets, "are still available")
-		fmt.Println("Get your tickets here to attend the conference!")
+		greetUsers(conferenceName, conferenceTickets, remainingTickets)
 
 		fmt.Println("Enter your first name: ")
 		fmt.Scan(&firstName)
@@ -32,7 +30,7 @@ func main() {
 
 		if !regexPattern {
 			fmt.Println("Names must be only letters!")
-			continue
+			break //break example, throws the iteration out of the loop
 		}
 
 		fmt.Println("Enter your last name: ")
@@ -81,20 +79,33 @@ func main() {
 		remainingTickets = remainingTickets - bookedTickets
 		bookings = append(bookings, firstName+" "+lastName)
 
+		FirstNames, LastNames := getNames(bookings)
+		fmt.Println("Confirmed tickets: ", FirstNames)
+		fmt.Println("List of last names: ", LastNames)
+
 		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
 		fmt.Println(remainingTickets, "tickets are left for", conferenceName)
 
-		firstNames := []string{}
-		lastNames := []string{}
-		for _, booking := range bookings {
-			var name = strings.Fields(booking)
-			firstNames = append(firstNames, name[0])
-			lastNames = append(lastNames, name[1])
-		}
-		fmt.Println("Confirmed Bookings", firstNames)
-		fmt.Println("Last Names: ", lastNames)
 	}
 	fmt.Println("All Tickets are booked. Thank you for your concern. Please comeback in next season.")
 	duration := time.Since(start)
 	fmt.Println(duration.Milliseconds())
+}
+
+func greetUsers(confName string, confTicket int, remainingTickets uint) {
+
+	fmt.Println("Welcome to", confName, "booking application")
+	fmt.Println("We have total of", confTicket, "tickets and", remainingTickets, "are still available")
+	fmt.Println("Get your tickets here to attend the conference!")
+}
+
+func getNames(bookings []string) ([]string, []string) {
+	firstNames := []string{}
+	lastNames := []string{}
+	for _, booking := range bookings {
+		var name = strings.Fields(booking)
+		firstNames = append(firstNames, name[0])
+		lastNames = append(lastNames, name[1])
+	}
+	return firstNames, lastNames
 }
