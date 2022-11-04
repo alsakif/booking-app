@@ -6,24 +6,27 @@ import (
 	"strings"
 )
 
-func main() {
+// Package level variables
+const conferenceTickets = 50
 
-	var conferenceName = "Go Conference"
-	var firstName string
-	var lastName string
-	var email string
-	const conferenceTickets = 50
-	var remainingTickets uint = 50
-	var bookedTickets uint
+var conferenceName = "Go Conference"
+var firstName string
+var lastName string
+var email string
+var remainingTickets uint = 50
+var bookedTickets uint
+
+func main() {
 
 	for remainingTickets > 0 {
 
-		greetUsers(conferenceName, conferenceTickets, remainingTickets)
+		greetUsers()
 
-		updatedFirstName := getFirstName(firstName)
-		updatedLastName := getLastName(lastName)
-		updatedEmail := getEmail(email)
-		newBookedTicketsCount, newRemainingTicketsCount := getTicket(bookedTickets, remainingTickets)
+		//Dosen't need to pass the variable value while calling function, as the variables are package level
+		updatedFirstName := getFirstName()
+		updatedLastName := getLastName()
+		updatedEmail := getEmail()
+		newBookedTicketsCount, newRemainingTicketsCount := getTicket()
 
 		firstName = updatedFirstName
 		lastName = updatedLastName
@@ -31,20 +34,20 @@ func main() {
 		bookedTickets = newBookedTicketsCount
 		remainingTickets = newRemainingTicketsCount
 
-		getConfimedBookingList(firstName, lastName, bookedTickets, email, remainingTickets)
+		getConfimedBookingList()
 
 	}
 	lastMsg()
 }
 
-func greetUsers(confName string, confTicket int, remainingTickets uint) {
+func greetUsers() {
 
-	fmt.Println("Welcome to", confName, "booking application")
-	fmt.Println("We have total of", confTicket, "tickets and", remainingTickets, "are still available")
+	fmt.Println("Welcome to", conferenceName, "booking application")
+	fmt.Println("We have total of", conferenceTickets, "tickets and", remainingTickets, "are still available")
 	fmt.Println("Get your tickets here to attend the conference!")
 }
 
-func getFirstName(firstName string) string {
+func getFirstName() string {
 	var changedFirstName string
 	fmt.Println("Enter your first name: ")
 	fmt.Scan(&firstName)
@@ -62,7 +65,7 @@ func getFirstName(firstName string) string {
 	return changedFirstName
 }
 
-func getLastName(lastName string) string {
+func getLastName() string {
 	var changedLastName string
 	fmt.Println("Enter your Last name: ")
 	fmt.Scan(&lastName)
@@ -80,7 +83,7 @@ func getLastName(lastName string) string {
 	return changedLastName
 }
 
-func getEmail(email string) string {
+func getEmail() string {
 	var changedEmail string
 	fmt.Println("Enter your email address: ")
 	fmt.Scan(&email)
@@ -98,7 +101,7 @@ func getEmail(email string) string {
 	return changedEmail
 }
 
-func getTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
+func getTicket() (uint, uint) {
 	var maxTickets uint = 45
 	var newCount uint
 
@@ -133,7 +136,7 @@ func getTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	return newCount, remainingTickets
 }
 
-func getConfimedBookingList(firstName string, lastName string, bookedTickets uint, email string, remainingTickets uint) {
+func getConfimedBookingList() {
 	var bookings []string
 	bookings = append(bookings, firstName+" "+lastName)
 
