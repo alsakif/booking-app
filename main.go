@@ -7,76 +7,37 @@ import (
 	"time"
 )
 
-var conferenceName = "Go Conference"
-
-const conferenceTickets = 50
-
-var remainingTickets uint = 50
-var bookedTickets uint
-var bookings []string
-
 func main() {
+
+	var conferenceName = "Go Conference"
+	var firstName string
+	var lastName string
+	var email string
+	const conferenceTickets = 50
+	var remainingTickets uint = 50
+	var bookedTickets uint
+	var bookings []string
 
 	start := time.Now()
 	for remainingTickets > 0 {
-		var firstName string
-		var lastName string
-		var email string
 
-		//Function 1
 		greetUsers(conferenceName, conferenceTickets, remainingTickets)
+		updatedFirstName := getFirstName(firstName)
+		updatedLastName := getLastName(lastName)
+		updatedEmail := getEmail(email)
+		newBookedTicketsCount, newRemainingTicketsCount := getTicket(bookedTickets, remainingTickets)
 
-		fmt.Println("Enter your first name: ")
-		fmt.Scan(&firstName)
-
-		regexPattern := regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(firstName)
-
-		for !regexPattern {
-			fmt.Println("Names must be only letters!")
-
-			fmt.Println("Enter your first name: ")
-			fmt.Scan(&firstName)
-			regexPattern = regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(firstName)
-		}
-
-		fmt.Println("Enter your last name: ")
-		fmt.Scan(&lastName)
-
-		lastNameRegexPattern := regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(lastName)
-
-		if !lastNameRegexPattern {
-			fmt.Println("Names must be only letters!")
-
-			fmt.Println("Enter your last name: ")
-			fmt.Scan(&lastName)
-			lastNameRegexPattern = regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(lastName)
-		}
-
-		fmt.Println("Enter your email address: ")
-		fmt.Scan(&email)
-
-		emailRegexPattern := regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`).MatchString(email)
-
-		if !emailRegexPattern {
-			fmt.Println("Invalid Email Address!")
-
-			fmt.Println("Enter your email address: ")
-			fmt.Scan(&email)
-			emailRegexPattern = regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`).MatchString(email)
-		}
-
-		fmt.Println("Enter number of tickets: ")
-		fmt.Scan(&bookedTickets)
-
-		//Function 2
-		newBookedTicketsCount, newRemainingTicketsCount := bookingTicketValidation(bookedTickets, remainingTickets)
+		firstName = updatedFirstName
+		lastName = updatedLastName
+		email = updatedEmail
+		bookedTickets = newBookedTicketsCount
+		remainingTickets = newRemainingTicketsCount
 
 		bookings = append(bookings, firstName+" "+lastName)
 
-		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, newBookedTicketsCount, email)
-		fmt.Println(newRemainingTicketsCount, "tickets are left !")
+		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
+		fmt.Println(remainingTickets, "tickets are left !")
 
-		//Function 3
 		firstNames := getConfimedBookingList(bookings)
 		fmt.Println("Confirmed Booking List", firstNames)
 		fmt.Println("Confirmed Booking List with full name", bookings)
@@ -93,15 +54,72 @@ func greetUsers(confName string, confTicket int, remainingTickets uint) {
 	fmt.Println("Get your tickets here to attend the conference!")
 }
 
-func bookingTicketValidation(bookedTickets uint, remainingTickets uint) (uint, uint) {
+func getFirstName(firstName string) string {
+	var changedFirstName string
+	fmt.Println("Enter your first name: ")
+	fmt.Scan(&firstName)
+
+	regexPattern := regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(firstName)
+
+	for !regexPattern {
+		fmt.Println("Names must be only letters!")
+
+		fmt.Println("Enter your first name: ")
+		fmt.Scan(&firstName)
+		regexPattern = regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(firstName)
+	}
+	changedFirstName = firstName
+	return changedFirstName
+}
+
+func getLastName(lastName string) string {
+	var changedLastName string
+	fmt.Println("Enter your Last name: ")
+	fmt.Scan(&lastName)
+
+	lastNameRegexPattern := regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(lastName)
+
+	for !lastNameRegexPattern {
+		fmt.Println("Names must be only letters!")
+
+		fmt.Println("Enter your last name: ")
+		fmt.Scan(&lastName)
+		lastNameRegexPattern = regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(lastName)
+	}
+	changedLastName = lastName
+	return changedLastName
+}
+
+func getEmail(email string) string {
+	var changedEmail string
+	fmt.Println("Enter your email address: ")
+	fmt.Scan(&email)
+
+	emailRegexPattern := regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`).MatchString(email)
+
+	for !emailRegexPattern {
+		fmt.Println("Invalid Email Address!")
+
+		fmt.Println("Enter your email address: ")
+		fmt.Scan(&email)
+		emailRegexPattern = regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`).MatchString(email)
+	}
+	changedEmail = email
+	return changedEmail
+}
+
+func getTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	var maxTickets uint = 45
 	var newCount uint
+
+	fmt.Println("Enter number of tickets: ")
+	fmt.Scan(&bookedTickets)
+
 	for bookedTickets == 0 {
 		fmt.Println("Invalid Input!")
 
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
-		newCount = bookedTickets
 
 	}
 	for bookedTickets > remainingTickets {
@@ -109,6 +127,7 @@ func bookingTicketValidation(bookedTickets uint, remainingTickets uint) (uint, u
 
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
+
 	}
 
 	for bookedTickets > maxTickets {
@@ -117,6 +136,8 @@ func bookingTicketValidation(bookedTickets uint, remainingTickets uint) (uint, u
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
 	}
+
+	newCount = bookedTickets
 	remainingTickets = remainingTickets - newCount
 
 	return newCount, remainingTickets
