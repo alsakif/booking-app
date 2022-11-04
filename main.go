@@ -7,12 +7,15 @@ import (
 	"time"
 )
 
+var conferenceName = "Go Conference"
+
+const conferenceTickets = 50
+
+var remainingTickets uint = 50
+var bookedTickets uint
+var bookings []string
+
 func main() {
-	var conferenceName = "Go Conference"
-	const conferenceTickets = 50
-	var remainingTickets uint = 50
-	var bookedTickets uint
-	var bookings []string
 
 	start := time.Now()
 	for remainingTickets > 0 {
@@ -20,7 +23,7 @@ func main() {
 		var lastName string
 		var email string
 
-		//Function with pre defined input parameter
+		//Function 1
 		greetUsers(conferenceName, conferenceTickets, remainingTickets)
 
 		fmt.Println("Enter your first name: ")
@@ -28,9 +31,12 @@ func main() {
 
 		regexPattern := regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(firstName)
 
-		if !regexPattern {
+		for !regexPattern {
 			fmt.Println("Names must be only letters!")
-			continue
+
+			fmt.Println("Enter your first name: ")
+			fmt.Scan(&firstName)
+			regexPattern = regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(firstName)
 		}
 
 		fmt.Println("Enter your last name: ")
@@ -40,7 +46,10 @@ func main() {
 
 		if !lastNameRegexPattern {
 			fmt.Println("Names must be only letters!")
-			continue
+
+			fmt.Println("Enter your last name: ")
+			fmt.Scan(&lastName)
+			lastNameRegexPattern = regexp.MustCompile(`^[a-zA-Z]{3,10}$`).MatchString(lastName)
 		}
 
 		fmt.Println("Enter your email address: ")
@@ -50,12 +59,16 @@ func main() {
 
 		if !emailRegexPattern {
 			fmt.Println("Invalid Email Address!")
-			continue
+
+			fmt.Println("Enter your email address: ")
+			fmt.Scan(&email)
+			emailRegexPattern = regexp.MustCompile(`^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$`).MatchString(email)
 		}
 
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
 
+		//Function 2
 		bookingTicketValidation(bookedTickets, remainingTickets)
 
 		remainingTickets = remainingTickets - bookedTickets
@@ -64,8 +77,10 @@ func main() {
 		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
 		fmt.Println(remainingTickets, "tickets are left !")
 
+		//Function 3
 		firstNames := getConfimedBookingList(bookings)
 		fmt.Println("Confirmed Booking List", firstNames)
+		fmt.Println("Confirmed Booking List with full name", bookings)
 	}
 	fmt.Println("All Tickets are booked. Thank you for your concern. Please comeback in next season.")
 	duration := time.Since(start)
@@ -86,6 +101,7 @@ func bookingTicketValidation(bookedTickets uint, remainingTickets uint) {
 
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
+
 	}
 	for bookedTickets > remainingTickets {
 		fmt.Println(remainingTickets, "tickets are available. You have asked too much!")
