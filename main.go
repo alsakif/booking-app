@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
-	"time"
 )
 
 func main() {
@@ -16,12 +15,11 @@ func main() {
 	const conferenceTickets = 50
 	var remainingTickets uint = 50
 	var bookedTickets uint
-	var bookings []string
 
-	start := time.Now()
 	for remainingTickets > 0 {
 
 		greetUsers(conferenceName, conferenceTickets, remainingTickets)
+
 		updatedFirstName := getFirstName(firstName)
 		updatedLastName := getLastName(lastName)
 		updatedEmail := getEmail(email)
@@ -33,18 +31,10 @@ func main() {
 		bookedTickets = newBookedTicketsCount
 		remainingTickets = newRemainingTicketsCount
 
-		bookings = append(bookings, firstName+" "+lastName)
+		getConfimedBookingList(firstName, lastName, bookedTickets, email, remainingTickets)
 
-		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
-		fmt.Println(remainingTickets, "tickets are left !")
-
-		firstNames := getConfimedBookingList(bookings)
-		fmt.Println("Confirmed Booking List", firstNames)
-		fmt.Println("Confirmed Booking List with full name", bookings)
 	}
-	fmt.Println("All Tickets are booked. Thank you for your concern. Please comeback in next season.")
-	duration := time.Since(start)
-	fmt.Println(duration.Milliseconds())
+	lastMsg()
 }
 
 func greetUsers(confName string, confTicket int, remainingTickets uint) {
@@ -143,11 +133,22 @@ func getTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	return newCount, remainingTickets
 }
 
-func getConfimedBookingList(bookings []string) []string {
-	firstNames := []string{}
+func getConfimedBookingList(firstName string, lastName string, bookedTickets uint, email string, remainingTickets uint) {
+	var bookings []string
+	bookings = append(bookings, firstName+" "+lastName)
+
+	cnfirmedList := []string{}
 	for _, booking := range bookings {
 		var name = strings.Fields(booking) //Splits the string with white space as separator and addresses every splits with index number
-		firstNames = append(firstNames, name[0])
+		cnfirmedList = append(cnfirmedList, name[0])
 	}
-	return firstNames
+
+	fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
+	fmt.Println(remainingTickets, "tickets are left !")
+	fmt.Println("Confirmed Booking List", cnfirmedList)
+	fmt.Println("Confirmed Booking List with full name", bookings)
+}
+
+func lastMsg() {
+	fmt.Println("All Tickets are booked. Thank you for your concern. Please comeback in next season.")
 }
