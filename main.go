@@ -69,13 +69,12 @@ func main() {
 		fmt.Scan(&bookedTickets)
 
 		//Function 2
-		bookingTicketValidation(bookedTickets, remainingTickets)
+		newBookedTicketsCount, newRemainingTicketsCount := bookingTicketValidation(bookedTickets, remainingTickets)
 
-		remainingTickets = remainingTickets - bookedTickets
 		bookings = append(bookings, firstName+" "+lastName)
 
-		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
-		fmt.Println(remainingTickets, "tickets are left !")
+		fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, newBookedTicketsCount, email)
+		fmt.Println(newRemainingTicketsCount, "tickets are left !")
 
 		//Function 3
 		firstNames := getConfimedBookingList(bookings)
@@ -94,13 +93,15 @@ func greetUsers(confName string, confTicket int, remainingTickets uint) {
 	fmt.Println("Get your tickets here to attend the conference!")
 }
 
-func bookingTicketValidation(bookedTickets uint, remainingTickets uint) {
+func bookingTicketValidation(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	var maxTickets uint = 45
+	var newCount uint
 	for bookedTickets == 0 {
 		fmt.Println("Invalid Input!")
 
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
+		newCount = bookedTickets
 
 	}
 	for bookedTickets > remainingTickets {
@@ -116,6 +117,9 @@ func bookingTicketValidation(bookedTickets uint, remainingTickets uint) {
 		fmt.Println("Enter number of tickets: ")
 		fmt.Scan(&bookedTickets)
 	}
+	remainingTickets = remainingTickets - newCount
+
+	return newCount, remainingTickets
 }
 
 func getConfimedBookingList(bookings []string) []string {
