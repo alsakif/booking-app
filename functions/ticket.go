@@ -40,18 +40,13 @@ func GetTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	return newCount, remainingTickets
 }
 
-func GetConfimedBookingList(firstName string, lastName string, bookedTickets uint, email string, remainingTickets uint) {
+func GetConfimedBookingList(firstName string, lastName string, bookingList []string) []string {
 	var bookings []string
 	bookings = append(bookings, firstName+" "+lastName)
 
-	cnfirmedList := []string{}
 	for _, booking := range bookings {
 		var name = strings.Fields(booking) //Splits the string with white space as separator and addresses every splits with index number
-		cnfirmedList = append(cnfirmedList, name[0])
+		bookingList = append(bookingList, name[0])
 	}
-
-	fmt.Printf("Thank you %v %v for booking %v ticket/s. You will receive a confirmation email at %v.\n", firstName, lastName, bookedTickets, email)
-	fmt.Println(remainingTickets, "tickets are left !")
-	fmt.Println("Confirmed Booking List", cnfirmedList)
-	fmt.Println("Confirmed Booking List with full name", bookings)
+	return bookingList
 }

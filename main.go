@@ -4,15 +4,17 @@ import (
 	"booking-app/functions"
 )
 
-func main() {
+const conferenceTickets = 50
 
-	var conferenceName = "Go Conference"
-	var firstName string
-	var lastName string
-	var email string
-	const conferenceTickets = 50
-	var remainingTickets uint = 50
-	var bookedTickets uint
+var conferenceName = "Go Conference"
+var firstName string
+var lastName string
+var email string
+var remainingTickets uint = 50
+var bookedTickets uint
+var bookingList []string
+
+func main() {
 
 	for remainingTickets > 0 {
 
@@ -28,7 +30,10 @@ func main() {
 		bookedTickets = newBookedTicketsCount
 		remainingTickets = newRemainingTicketsCount
 
-		functions.GetConfimedBookingList(firstName, lastName, bookedTickets, email, remainingTickets)
+		newBookingList := functions.GetConfimedBookingList(firstName, lastName, bookingList)
+		bookingList = newBookingList
+
+		functions.ConfirmationMsg(firstName, lastName, bookedTickets, email, remainingTickets, bookingList)
 	}
 
 	functions.LastMsg()
