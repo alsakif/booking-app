@@ -2,7 +2,7 @@ package functions
 
 import (
 	"fmt"
-	"strings"
+	"strconv"
 )
 
 func GetTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
@@ -40,13 +40,20 @@ func GetTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	return newCount, remainingTickets
 }
 
-func GetConfimedBookingList(firstName string, lastName string, bookingList []string) []string {
-	var bookings []string
-	bookings = append(bookings, firstName+" "+lastName)
+func GetConfimedBookingList(firstName string, lastName string, email string, bookedTickets uint, bookingList []string, userDetail []map[string]string) []string {
 
-	for _, booking := range bookings {
-		var name = strings.Fields(booking) //Splits the string with white space as separator and addresses every splits with index number
-		bookingList = append(bookingList, name[0])
+	var userdata = make(map[string]string)
+
+	userdata["Firstname"] = firstName
+	userdata["Lastname"] = lastName
+	userdata["Email"] = email
+	userdata["Tickets"] = strconv.FormatUint(uint64(bookedTickets), 10)
+
+	userDetail = append(userDetail, userdata)
+	fmt.Println("User Detail", userDetail)
+
+	for _, booking := range userDetail {
+		bookingList = append(bookingList, booking["Firstname"])
 	}
 	return bookingList
 }

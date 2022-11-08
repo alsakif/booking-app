@@ -12,6 +12,7 @@ var lastName string
 var email string
 var remainingTickets uint = 50
 var bookedTickets uint
+var userDetail = make([]map[string]string, 0)
 var bookingList []string
 
 func main() {
@@ -30,7 +31,7 @@ func main() {
 		bookedTickets = newBookedTicketsCount
 		remainingTickets = newRemainingTicketsCount
 
-		newBookingList := functions.GetConfimedBookingList(firstName, lastName, bookingList)
+		newBookingList := functions.GetConfimedBookingList(firstName, lastName, email, bookedTickets, bookingList, userDetail)
 		bookingList = newBookingList
 
 		functions.ConfirmationMsg(firstName, lastName, bookedTickets, email, remainingTickets, bookingList)
