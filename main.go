@@ -11,18 +11,19 @@ import (
 const conferenceTickets = 50
 
 var conferenceName = "Go Conference"
-var firstName string
-var lastName string
-var email string
-var remainingTickets uint = 50
-var bookedTickets uint
 
-// var userDetail = make([]userMetaData, 0)
+var remainingTickets uint = 50
+
 var bookingList []string
 
 //var wg = sync.WaitGroup{}
 
 func main() {
+
+	var firstName string
+	var lastName string
+	var email string
+	var bookedTickets uint
 
 	for remainingTickets > 0 {
 
