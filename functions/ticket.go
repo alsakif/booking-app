@@ -4,6 +4,15 @@ import (
 	"fmt"
 )
 
+type userMetaData struct {
+	Firstname string
+	Lastname  string
+	Email     string
+	Tickets   uint
+}
+
+var userDetail = make([]userMetaData, 0)
+
 func GetTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	var maxTickets uint = 45
 	var newCount uint
@@ -37,4 +46,23 @@ func GetTicket(bookedTickets uint, remainingTickets uint) (uint, uint) {
 	remainingTickets = remainingTickets - newCount
 
 	return newCount, remainingTickets
+}
+
+func GetConfimedBookingList(firstName string, lastName string, email string, bookedTickets uint, bookingList []string) []string {
+
+	var userdata = userMetaData{
+		Firstname: firstName,
+		Lastname:  lastName,
+		Email:     email,
+		Tickets:   bookedTickets,
+	}
+
+	userDetail = append(userDetail, userdata)
+	fmt.Println("User Detail", userDetail)
+	firstNames := []string{}
+	for _, booking := range userDetail {
+		firstNames = append(bookingList, booking.Firstname)
+	}
+	bookingList = firstNames
+	return bookingList
 }

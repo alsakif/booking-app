@@ -16,15 +16,9 @@ var lastName string
 var email string
 var remainingTickets uint = 50
 var bookedTickets uint
-var userDetail = make([]userMetaData, 0)
-var bookingList []string
 
-type userMetaData struct {
-	Firstname string
-	Lastname  string
-	Email     string
-	Tickets   uint
-}
+// var userDetail = make([]userMetaData, 0)
+var bookingList []string
 
 //var wg = sync.WaitGroup{}
 
@@ -44,7 +38,7 @@ func main() {
 		bookedTickets = newBookedTicketsCount
 		remainingTickets = newRemainingTicketsCount
 
-		newBookingList := getConfimedBookingList()
+		newBookingList := functions.GetConfimedBookingList(firstName, lastName, email, bookedTickets, bookingList)
 		bookingList = newBookingList
 		//wg.Add(1)
 		//initiate another thread
@@ -54,25 +48,6 @@ func main() {
 	}
 	//wg.Wait()
 	functions.LastMsg()
-}
-
-func getConfimedBookingList() []string {
-
-	var userdata = userMetaData{
-		Firstname: firstName,
-		Lastname:  lastName,
-		Email:     email,
-		Tickets:   bookedTickets,
-	}
-
-	userDetail = append(userDetail, userdata)
-	fmt.Println("User Detail", userDetail)
-	firstNames := []string{}
-	for _, booking := range userDetail {
-		firstNames = append(bookingList, booking.Firstname)
-	}
-	bookingList = firstNames
-	return bookingList
 }
 
 func sendTicket() {
