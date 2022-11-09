@@ -3,6 +3,8 @@ package main
 import (
 	"booking-app/functions"
 	"fmt"
+	"sync"
+	"time"
 )
 
 const conferenceTickets = 50
@@ -23,6 +25,8 @@ type userMetaData struct {
 	Tickets   uint
 }
 
+var wg = sync.WaitGroup{}
+
 func main() {
 
 	for remainingTickets > 0 {
@@ -41,10 +45,12 @@ func main() {
 
 		newBookingList := getConfimedBookingList()
 		bookingList = newBookingList
-
+		wg.Add(1)
+		go sendTicket() //initiate another thread
 		functions.ConfirmationMsg(firstName, lastName, bookedTickets, email, remainingTickets, bookingList)
-	}
 
+	}
+	wg.Wait()
 	functions.LastMsg()
 }
 
@@ -65,4 +71,13 @@ func getConfimedBookingList() []string {
 	}
 	bookingList = firstNames
 	return bookingList
+}
+
+func sendTicket() {
+	time.Sleep(5 * time.Second)
+	var ticket = fmt.Sprintf("%v tickets for %v %v", bookedTickets, firstName, lastName)
+	fmt.Println("#################")
+	fmt.Printf("Sending ticket:\n %v \nto email address %v\n", ticket, email)
+	fmt.Println("#################")
+	wg.Done()
 }
