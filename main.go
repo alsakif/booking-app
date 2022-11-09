@@ -27,14 +27,11 @@ func main() {
 	for remainingTickets > 0 {
 
 		functions.GreetUsers(conferenceName, conferenceTickets, remainingTickets)
-		updatedFirstName := functions.GetFirstName(firstName)
-		updatedLastName := functions.GetLastName(lastName)
-		updatedEmail := functions.GetEmail(email)
+		firstName := functions.GetFirstName(firstName)
+		lastName := functions.GetLastName(lastName)
+		email := functions.GetEmail(email)
 		newBookedTicketsCount, newRemainingTicketsCount := functions.GetTicket(bookedTickets, remainingTickets)
 
-		firstName = updatedFirstName
-		lastName = updatedLastName
-		email = updatedEmail
 		bookedTickets = newBookedTicketsCount
 		remainingTickets = newRemainingTicketsCount
 
@@ -43,14 +40,14 @@ func main() {
 		//wg.Add(1)
 		//initiate another thread
 		functions.ConfirmationMsg(firstName, lastName, bookedTickets, email, remainingTickets, bookingList)
-		go sendTicket()
+		go sendTicket(bookedTickets, firstName, lastName, email)
 
 	}
 	//wg.Wait()
 	functions.LastMsg()
 }
 
-func sendTicket() {
+func sendTicket(bookedTickets uint, firstName string, lastName string, email string) {
 	time.Sleep(30 * time.Second)
 	var ticket = fmt.Sprintf("%v tickets for %v %v", bookedTickets, firstName, lastName)
 	fmt.Println("#################")
