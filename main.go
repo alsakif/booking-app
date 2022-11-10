@@ -11,9 +11,7 @@ import (
 const conferenceTickets = 50
 
 var conferenceName = "Go Conference"
-
 var remainingTickets uint = 50
-
 var bookingList []string
 
 //var wg = sync.WaitGroup{}
